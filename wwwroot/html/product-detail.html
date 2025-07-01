@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShoeStore - Chi Tiết Sản Phẩm</title>
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/product-detail.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <script src="../js/common.js" defer></script>
+    <script src="../js/product-detail.js" defer></script>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="navbar">
+        <div class="logo">
+          <a href="index.html"
+            ><img
+              src="https://via.placeholder.com/50"
+              alt="Logo"
+              class="logo-img"
+            />
+            ShoeStore</a
+          >
+        </div>
+        <ul class="nav-links">
+          <li>
+            <a href="index.html"><i class="fas fa-home"></i> Trang chủ</a>
+          </li>
+          <li class="dropdown">
+            <a href="products.html" class="dropbtn"
+              ><i class="fas fa-shoe-prints"></i> Sản phẩm
+              <i class="fas fa-caret-down"></i
+            ></a>
+            <div class="dropdown-content">
+              <a href="#">Giày thể thao</a>
+              <a href="#">Giày công sở</a>
+              <a href="#">Giày sneaker</a>
+              <a href="#">Giày giảm giá</a>
+            </div>
+          </li>
+          <li>
+            <a href="cart.html"
+              ><i class="fas fa-shopping-cart"></i> Giỏ hàng</a
+            >
+          </li>
+          <li>
+            <a href="order-history.html">
+              <i class="fas fa-history"></i> Lịch sử đơn hàng</a
+            >
+          </li>
+          <li>
+            <a href="login.html"
+              ><i class="fas fa-sign-in-alt"></i> Đăng nhập</a
+            >
+          </li>
+          <li>
+            <a href="register.html"><i class="fas fa-user-plus"></i> Đăng ký</a>
+          </li>
+        </ul>
+        <div class="cart-icon">
+          <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+          <span id="cart-count">0</span>
+        </div>
+        <div class="menu-toggle">
+          <i class="fas fa-bars"></i>
+        </div>
+      </nav>
+    </header>
+
+    <section class="product-detail">
+      <div class="product-detail-container">
+        <!-- Hình ảnh sản phẩm (Carousel) -->
+        <div class="product-images">
+          <div class="main-image">
+            <img
+              src="https://via.placeholder.com/500"
+              alt="Product Image"
+              id="main-product-image"
+            />
+          </div>
+          <div class="thumbnails">
+            <img
+              src="https://via.placeholder.com/80"
+              alt="Thumbnail 1"
+              onclick="changeMainImage('https://via.placeholder.com/500')"
+            />
+            <img
+              src="https://via.placeholder.com/80?text=Angle2"
+              alt="Thumbnail 2"
+              onclick="changeMainImage('https://via.placeholder.com/500?text=Angle2')"
+            />
+            <img
+              src="https://via.placeholder.com/80?text=Angle3"
+              alt="Thumbnail 3"
+              onclick="changeMainImage('https://via.placeholder.com/500?text=Angle3')"
+            />
+          </div>
+        </div>
+
+        <!-- Thông tin sản phẩm -->
+        <div class="product-info">
+          <h2 id="product-name">Nike Air Max 90</h2>
+          <div class="product-rating">
+            <span class="star">★★★★★</span> (4.8/5) - Đã bán: 1.234
+          </div>
+          <p class="price" id="product-price">
+            500.000 VNĐ <span class="old-price">700.000 VNĐ</span>
+          </p>
+          <p class="discount">Giảm 29% - Ưu đãi có hạn!</p>
+          <p id="product-short-description">
+            Đôi giày thể thao phong cách, thoải mái cho mọi hoạt động hàng ngày.
+          </p>
+
+          <div class="product-options">
+            <div class="option-group">
+              <label>Kích cỡ:</label>
+              <select id="size">
+                <option value="38">38</option>
+                <option value="39">39</option>
+                <option value="40">40</option>
+                <option value="41">41</option>
+              </select>
+            </div>
+            <div class="option-group">
+              <label>Số lượng:</label>
+              <input type="number" id="quantity" min="1" value="1" />
+            </div>
+          </div>
+
+          <div class="product-actions">
+            <button onclick="addToCartFromDetail()" class="buy-btn">
+              Thêm vào giỏ
+            </button>
+            <button class="buy-now-btn" onclick="buyNow()">Mua ngay</button>
+          </div>
+
+          <!-- Khuyến mãi (nếu có) -->
+          <div class="promotions">
+            <p>
+              <strong>Khuyến mãi:</strong> Miễn phí vận chuyển cho đơn hàng từ
+              500.000 VNĐ
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nội dung chi tiết -->
+      <div class="product-content">
+        <div class="tabs">
+          <button class="tab-btn active" onclick="openTab('description')">
+            Mô tả
+          </button>
+          <button class="tab-btn" onclick="openTab('specs')">
+            Thông số kỹ thuật
+          </button>
+          <button class="tab-btn" onclick="openTab('reviews')">
+            Đánh giá (1.234)
+          </button>
+
+          <div id="description" class="tab-content active">
+            <p>
+              Đôi giày Nike Air Max 90 mang đến phong cách cổ điển kết hợp với
+              công nghệ hiện đại. Đệm Air Max cung cấp sự êm ái tối ưu, đế ngoài
+              bền bỉ, phù hợp cho cả đi bộ và chạy bộ. Thiết kế tinh tế, màu sắc
+              đa dạng, phù hợp với mọi phong cách sống.
+            </p>
+          </div>
+
+          <div id="specs" class="tab-content">
+            <ul>
+              <li><strong>Chất liệu:</strong> Da tổng hợp, vải lưới cao cấp</li>
+              <li><strong>Kích cỡ:</strong> 38, 39, 40, 41</li>
+              <li><strong>Trọng lượng:</strong> 300g (cỡ 39)</li>
+              <li><strong>Màu sắc:</strong> Đen, Trắng, Xám</li>
+              <li>
+                <strong>Đặc điểm nổi bật:</strong> Đệm Air Max, đế ngoài bền,
+                thiết kế hiện đại
+              </li>
+            </ul>
+          </div>
+
+          <div id="reviews" class="tab-content">
+            <div class="review-section">
+              <div class="review-item">
+                <p><strong>Nguyễn Văn A</strong> - ★★★★★</p>
+                <p>Giày rất đẹp, chất lượng tốt, giao hàng nhanh chóng!</p>
+              </div>
+              <div class="review-item">
+                <p><strong>Trần Thị B</strong> - ★★★★☆</p>
+                <p>Giày thoải mái, nhưng size hơi nhỏ so với thông số.</p>
+              </div>
+            </div>
+            <textarea
+              placeholder="Viết đánh giá của bạn..."
+              rows="4"
+              class="review-input"
+            ></textarea>
+            <button class="submit-review-btn" onclick="submitReview()">
+              Gửi đánh giá
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2025 ShoeStore. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>

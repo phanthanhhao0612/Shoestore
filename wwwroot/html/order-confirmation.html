@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShoeStore - Xác Nhận Đơn Hàng</title>
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/order-confirmation.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <script src="../js/common.js" defer></script>
+    <script src="../js/order-confirmation.js" defer></script>
+    <style>
+      /* Thêm kiểu dáng cơ bản cho lịch sử đơn hàng */
+      .order-confirmation {
+        max-width: 1300px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      .order-details,
+      .order-history-list {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+      .order-item {
+        border-bottom: 1px solid #eee;
+        padding: 10px 0;
+      }
+      .order-item:last-child {
+        border-bottom: none;
+      }
+      .order-item p {
+        margin: 5px 0;
+      }
+      .order-item button {
+        margin: 5px 10px 0 0;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .order-item button:first-of-type {
+        background-color: #ff4d4d;
+        color: #fff;
+      }
+      .order-item button:first-of-type:hover {
+        background-color: #e63939;
+      }
+      .order-item .delete-btn {
+        background-color: #ccc;
+        color: #333;
+      }
+      .order-item .delete-btn:hover {
+        background-color: #b3b3b3;
+      }
+      .continue-shopping {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 20px;
+        background-color: #ff4d4d;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .continue-shopping:hover {
+        background-color: #e63939;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="navbar">
+        <div class="logo">
+          <a href="index.html">
+            <img
+              src="https://via.placeholder.com/50"
+              alt="Logo"
+              class="logo-img"
+            />
+            ShoeStore
+          </a>
+        </div>
+        <ul class="nav-links">
+          <li>
+            <a href="index.html"><i class="fas fa-home"></i> Trang chủ</a>
+          </li>
+          <li class="dropdown">
+            <a href="products.html" class="dropbtn">
+              <i class="fas fa-shoe-prints"></i> Sản phẩm
+              <i class="fas fa-caret-down"></i>
+            </a>
+            <div class="dropdown-content">
+              <a href="#">Giày thể thao</a>
+              <a href="#">Giày công sở</a>
+              <a href="#">Giày sneaker</a>
+              <a href="#">Giày giảm giá</a>
+            </div>
+          </li>
+          <li>
+            <a href="cart.html">
+              <i class="fas fa-shopping-cart"></i> Giỏ hàng
+            </a>
+          </li>
+          <li>
+            <a href="order-history.html">
+              <i class="fas fa-history"></i> Lịch sử đơn hàng
+            </a>
+          </li>
+          <li>
+            <a href="login.html">
+              <i class="fas fa-sign-in-alt"></i> Đăng nhập
+            </a>
+          </li>
+          <li>
+            <a href="register.html">
+              <i class="fas fa-user-plus"></i> Đăng ký
+            </a>
+          </li>
+        </ul>
+        <div class="cart-icon">
+          <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+          <span id="cart-count">0</span>
+        </div>
+        <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+      </nav>
+    </header>
+
+    <section class="order-confirmation container">
+      <h1>Xác Nhận Đơn Hàng</h1>
+      <p>Cảm ơn bạn đã đặt hàng! Dưới đây là thông tin đơn hàng của bạn:</p>
+      <div class="order-details">
+        <!-- Thông tin đơn hàng cuối cùng sẽ được chèn bởi JS -->
+      </div>
+      <h2>Lịch Sử Đơn Hàng</h2>
+      <div class="order-history-list">
+        <!-- Danh sách lịch sử đơn hàng sẽ được chèn bởi JS -->
+      </div>
+      <button
+        class="continue-shopping"
+        onclick="window.location.href='products.html'"
+      >
+        Tiếp tục mua sắm
+      </button>
+    </section>
+
+    <footer>
+      <div class="container">
+        <p>© 2025 ShoeStore. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>

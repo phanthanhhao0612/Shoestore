@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShoeStore - Trang Quản Trị</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="../css/admin.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="sidebar">
+      <h2>ShoeStore Admin</h2>
+      <ul>
+        <li class="active">
+          <a href="#" onclick="openTab('dashboard')">
+            <i class="fas fa-tachometer-alt"></i> Bảng Điều Khiển
+          </a>
+        </li>
+        <li>
+          <a href="#" onclick="openTab('products')">
+            <i class="fas fa-box"></i> Sản Phẩm
+          </a>
+        </li>
+        <li>
+          <a href="#" onclick="openTab('orders')">
+            <i class="fas fa-shopping-cart"></i> Đơn Hàng
+          </a>
+        </li>
+        <li>
+          <a href="#" onclick="openTab('inventory')">
+            <i class="fas fa-warehouse"></i> Kho Hàng
+          </a>
+        </li>
+        <li>
+          <a href="#" onclick="openTab('customers')">
+            <i class="fas fa-users"></i> Tài khoản
+          </a>
+        </li>
+        <li>
+          <a href="#" onclick="openTab('categories')">
+            <i class="fas fa-list"></i> Loại Sản Phẩm
+          </a>
+        </li>
+        <li>
+          <a href="#" onclick="openTab('product-details')">
+            <i class="fas fa-info-circle"></i> Chi Tiết Sản Phẩm
+          </a>
+        </li>
+        <li>
+          <a href="#" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Đăng Xuất
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="content">
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="openTab('dashboard')">
+                Tổng Quan
+            </button>
+            <button class="tab-btn" onclick="openTab('products')">Sản Phẩm</button>
+            <button class="tab-btn" onclick="openTab('orders')">Đơn Hàng</button>
+            <button class="tab-btn" onclick="openTab('inventory')">Kho Hàng</button>
+            <button class="tab-btn" onclick="openTab('customers')">
+                Tài khoản
+            </button>
+            <button class="tab-btn" onclick="openTab('categories')">
+                Loại Sản Phẩm
+            </button>
+            <button class="tab-btn" onclick="openTab('product-details')">
+                Chi Tiết Sản Phẩm
+            </button>
+        </div>
+
+        <!-- Tab Tổng Quan -->
+        <div id="dashboard" class="tab-content active">
+            <h1>Tổng Quan</h1>
+            <div class="dashboard">
+                <div class="card">
+                    <h3>Tổng Doanh Thu</h3>
+                    <p id="total-revenue">0 VNĐ</p>
+                </div>
+                <div class="card">
+                    <h3>Tổng Đơn Hàng</h3>
+                    <p id="total-orders">0</p>
+                </div>
+                <div class="card">
+                    <h3>Sản Phẩm</h3>
+                    <p id="total-products">0</p>
+                </div>
+                <div class="card">
+                    <h3>Khách Hàng</h3>
+                    <p id="total-customers">0</p>
+                </div>
+            </div>
+            <div class="charts">
+                <div class="chart-container">
+                    <h3>Doanh Số Hàng Tháng</h3>
+                    <canvas id="monthlySalesChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Tồn Kho Sản Phẩm</h3>
+                    <canvas id="inventoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Sản Phẩm -->
+        <div id="products" class="tab-content">
+            <h1>Quản Lý Sản Phẩm</h1>
+            <button class="add-product-btn" onclick="openAddProductModal()">
+                Thêm Sản Phẩm
+            </button>
+            <button class="reset-btn" onclick="resetProducts()">
+                Đặt lại dữ liệu
+            </button>
+            <table class="product-table">
+                <thead>
+                    <tr>
+                        <th>Hình Ảnh</th>
+                        <th>Tên Sản Phẩm</th>
+                        <th>Giá Gốc</th>
+                        <th>Giá (VNĐ)</th>
+                        <th>Hãng</th>
+                        <th>Kích Cỡ</th>
+                        <th>Số Lượng Tồn</th>
+                        <th>Flash Sale</th>
+                        <th>Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody id="product-list"></tbody>
+            </table>
+            <div class="pagination" id="pagination"></div>
+        </div>
+
+        <!-- Modal Thêm Sản Phẩm -->
+        <div id="add-product-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeAddProductModal()">×</span>
+                <h3>Thêm Sản Phẩm Mới</h3>
+                <form id="add-product-form" onsubmit="addProduct(event)">
+                    <div class="input-group">
+                        <label for="product-name">Tên Sản Phẩm</label>
+                        <input type="text" id="product-name" required />
+                    </div>
+                    <div class="input-group">
+                        <label for="product-original-price">Giá Gốc (VNĐ)</label>
+                        <input type="number" id="product-original-price" min="0" required placeholder="Giá gốc" />
+                    </div>
+                    <div class="input-group">
+                        <label for="product-price">Giá Khuyến Mãi (VNĐ)</label>
+                        <input type="number" id="product-price" min="0" required placeholder="Giá sau giảm" />
+                    </div>
+                    <div class="input-group">
+                        <label for="product-category">Hãng</label>
+                        <select id="product-category" required>
+                            <!-- Được điền bởi updateCategoryOptions() -->
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="product-size">Kích Cỡ</label>
+                        <input type="text" id="product-size" required placeholder="VD: 38, 39, 40" />
+                    </div>
+                    <div class="input-group">
+                        <label for="product-image">URL Hình Ảnh</label>
+                        <input type="text" id="product-image" required placeholder="VD: https://example.com/image.jpg" />
+                    </div>
+                    <div class="input-group">
+                        <label for="product-stock">Số Lượng Tồn</label>
+                        <input type="number" id="product-stock" min="0" value="5" placeholder="Số lượng tồn kho" />
+                    </div>
+                    <div class="input-group">
+                        <label for="product-is-flash-sale">Flash Sale?</label>
+                        <input type="checkbox" id="product-is-flash-sale" />
+                    </div>
+                    <button type="submit">Thêm Sản Phẩm</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Chỉnh Sửa Sản Phẩm -->
+        <div id="edit-product-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeEditProductModal()">×</span>
+                <h3>Chỉnh Sửa Sản Phẩm</h3>
+                <form id="edit-product-form" onsubmit="saveEditProduct(event)">
+                    <input type="hidden" id="edit-product-id" />
+                    <div class="input-group">
+                        <label for="edit-product-name">Tên Sản Phẩm</label>
+                        <input type="text" id="edit-product-name" required />
+                    </div>
+                    <div class="input-group">
+                        <label for="edit-product-original-price">Giá Gốc (VNĐ)</label>
+                        <input type="number" id="edit-product-original-price" min="0" required placeholder="Giá gốc" />
+                    </div>
+                    <div class="input-group">
+                        <label for="edit-product-price">Giá Khuyến Mãi (VNĐ)</label>
+                        <input type="number" id="edit-product-price" min="0" required placeholder="Giá sau giảm" />
+                    </div>
+                    <div class="input-group">
+                        <label for="edit-product-category">Hãng</label>
+                        <select id="edit-product-category" required>
+                            <!-- Được điền bởi updateCategoryOptions() -->
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="edit-product-size">Kích Cỡ</label>
+                        <input type="text" id="edit-product-size" required placeholder="VD: 38, 39, 40" />
+                    </div>
+                    <div class="input-group">
+                        <label for="edit-product-image">URL Hình Ảnh</label>
+                        <input type="text" id="edit-product-image" required placeholder="VD: https://example.com/image.jpg" />
+                    </div>
+                    <div class="input-group">
+                        <label for="edit-product-stock">Số Lượng Tồn</label>
+                        <input type="number" id="edit-product-stock" min="0" placeholder="Số lượng tồn kho" />
+                    </div>
+                    <div class="input-group">
+                        <label for="edit-product-is-flash-sale">Flash Sale?</label>
+                        <input type="checkbox" id="edit-product-is-flash-sale" />
+                    </div>
+                    <button type="submit">Lưu Thay Đổi</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tab Đơn Hàng -->
+        <div id="orders" class="tab-content">
+            <h1>Quản Lý Đơn Hàng</h1>
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th>Mã Đơn Hàng</th>
+                        <th>Khách Hàng</th>
+                        <th>Tổng Tiền</th>
+                        <th>Ngày Đặt</th>
+                        <th>Trạng Thái</th>
+                        <th>Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody id="order-list"></tbody>
+            </table>
+        </div>
+
+        <!-- Tab Kho Hàng -->
+        <div id="inventory" class="tab-content">
+            <h1>Quản Lý Kho Hàng</h1>
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>ID SP</th>
+                        <th>Tên Sản Phẩm</th>
+                        <th>Tồn Kho</th>
+                        <th>Ngày</th>
+                        <th>Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody id="inventory-list"></tbody>
+            </table>
+        </div>
+
+        <!-- Tab Khách Hàng -->
+        <div id="customers" class="tab-content">
+            <h1>Quản Lý Tài Khoản</h1>
+            <button class="add-customer-btn" onclick="openAddCustomerModal()">
+                Thêm Tài Khoản
+            </button>
+            <table class="customer-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên</th>
+                        <th>Email</th>
+                        <th>Số Điện Thoại</th>
+
+                        <th>Vai Trò</th>
+                        <th>Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody id="customer-list"></tbody>
+            </table>
+
+            <!-- Modal Thêm Tài Khoản -->
+            <div id="add-customer-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeAddCustomerModal()">×</span>
+                    <h3>Thêm Tài Khoản Mới</h3>
+                    <form id="add-customer-form" onsubmit="addCustomer(event)">
+                        <div class="input-group">
+                            <label for="customer-name">Tên Người Dùng</label>
+                            <input type="text" id="customer-name" required />
+                        </div>
+                        <div class="input-group">
+                            <label for="customer-email">Email</label>
+                            <input type="email" id="customer-email" required />
+                        </div>
+                        <div class="input-group">
+                            <label for="customer-password">Mật Khẩu</label>
+                            <input type="password" id="customer-password" required />
+                        </div>
+                        <div class="input-group">
+                            <label for="customer-phone">Số Điện Thoại</label>
+                            <input type="text" id="customer-phone" required />
+                        </div>
+
+                        <div class="input-group">
+                            <label for="customer-role">Vai Trò</label>
+                            <select id="customer-role" required>
+                                <option value="customer">Khách Hàng</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        <button type="submit">Thêm Tài Khoản</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal Chỉnh Sửa Tài Khoản -->
+            <div id="edit-customer-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeEditCustomerModal()">×</span>
+                    <h3>Chỉnh Sửa Tài Khoản</h3>
+                    <form id="edit-customer-form" onsubmit="saveEditCustomer(event)">
+                        <input type="hidden" id="edit-customer-id" />
+                        <div class="input-group">
+                            <label for="edit-customer-name">Tên Người Dùng</label>
+                            <input type="text" id="edit-customer-name" required />
+                        </div>
+                        <div class="input-group">
+                            <label for="edit-customer-email">Email</label>
+                            <input type="email" id="edit-customer-email" required />
+                        </div>
+                        <div class="input-group">
+                            <label for="edit-customer-password">Mật Khẩu</label>
+                            <input type="password" id="edit-customer-password" required />
+                        </div>
+                        <div class="input-group">
+                            <label for="edit-customer-phone">Số Điện Thoại</label>
+                            <input type="text" id="edit-customer-phone" required />
+                        </div>
+
+                        <div class="input-group">
+                            <label for="edit-customer-role">Vai Trò</label>
+                            <select id="edit-customer-role" required>
+                                <option value="customer">Khách Hàng</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        <button type="submit">Lưu Thay Đổi</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Loại Sản Phẩm -->
+        <div id="categories" class="tab-content">
+            <h1>Quản Lý Loại Sản Phẩm</h1>
+            <button class="add-category-btn" onclick="openAddCategoryModal()">Thêm Loại Sản Phẩm</button>
+            <table class="category-table">
+                <thead>
+                    <tr>
+                        <th>Tên Loại</th>
+                        <th>Mô Tả</th>
+                        <th>Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody id="category-list"></tbody>
+            </table>
+            <div id="add-category-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeAddCategoryModal()">×</span>
+                    <h3>Thêm Loại Sản Phẩm Mới</h3>
+                    <form id="add-category-form" onsubmit="addCategory(event)">
+                        <div class="input-group">
+                            <label for="category-name">Tên Loại</label>
+                            <input type="text" id="category-name" required />
+                        </div>
+                        <div class="input-group">
+                            <label for="category-description">Mô Tả</label>
+                            <textarea id="category-description"></textarea> <!-- Loại bỏ required để linh hoạt -->
+                        </div>
+                        <button type="submit">Thêm Loại</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="product-details" class="tab-content">
+            <h1>Quản Lý Chi Tiết Sản Phẩm</h1>
+            <table class="product-table">
+                <thead>
+                    <tr>
+                        <th>Tên Sản Phẩm</th>
+                        <th>Mô Tả</th>
+                        <th>Thông Số Kỹ Thuật</th>
+                        <th>Đánh Giá</th>
+                        <th>Số Lượng Bán</th>
+                        <th>Số Lượng Tồn Kho</th>
+                        <th>Hình Ảnh Chi Tiết</th>
+                        <th>Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody id="product-details-list"></tbody>
+            </table>
+        </div>
+
+        <div id="edit-product-details-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeEditProductDetailsModal()">×</span>
+                <h3>Chỉnh Sửa Chi Tiết Sản Phẩm</h3>
+                <form id="edit-product-details-form" onsubmit="saveEditProductDetails(event)">
+                    <input type="hidden" id="edit-product-details-id" />
+                    <div class="input-group">
+                        <label for="edit-product-details-name">Tên Sản Phẩm</label>
+                        <input type="text" id="edit-product-details-name" disabled />
+                    </div>
+                    <div class="input-group">
+                        <label for="edit-product-details-description">Mô Tả</label>
+                        <textarea id="edit-product-details-description" rows="4"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label for="edit-product-details-material">Chất Liệu</label>
+                        <input type="text" id="edit-product-details-material" />
+                    </div>
+                    <div class="input-group">
+                        <label for="edit-product-details-weight">Trọng Lượng</label>
+                        <input type="text" id="edit-product-details-weight" />
+                    </div>
+                    <div class="input-group">
+                        <label for="edit-product-details-colors">Màu Sắc</label>
+                        <input type="text" id="edit-product-details-colors" />
+                    </div>
+                    <div class="input-group">
+                        <label for="edit-product-details-highlights">Đặc Điểm Nổi Bật</label>
+                        <input type="text" id="edit-product-details-highlights" />
+                    </div>
+                    <div class="input-group">
+                        <label for="edit-product-details-rating">Đánh Giá (0-5)</label>
+                        <input type="number" id="edit-product-details-rating" step="0.1" min="0" max="5" />
+                    </div>
+                    <div class="input-group">
+                        <label for="edit-product-details-sold">Số Lượng Bán</label>
+                        <input type="number" id="edit-product-details-sold" min="0" />
+                    </div>
+                    <div class="input-group">
+                        <label for="edit-product-details-stock">Số Lượng Tồn Kho</label>
+                        <input type="number" id="edit-product-details-stock" min="0" />
+                    </div>
+                    <div class="input-group">
+                        <label for="edit-product-details-images">Hình Ảnh Chi Tiết (Tối đa 5 ảnh)</label>
+                        <input type="file" id="edit-product-details-images" accept="image/*" multiple />
+                        <div id="image-preview" style="margin-top: 10px"></div>
+                    </div>
+                    <button type="submit">Lưu Thay Đổi</button>
+                </form>
+            </div>
+        </div>
+
+
+        <script src="../js/admin/admin.js" defer></script>
+        <script src="../js/common.js" defer></script>
+        <script src="../js/admin/dashboard.js" defer></script>
+        <script src="../js/admin/products.js" defer></script>
+        <script src="../js/admin/orders.js" defer></script>
+        <script src="../js/admin/inventory.js" defer></script>
+        <script src="../js/admin/customers.js" defer></script>
+        <script src="../js/admin/categories.js" defer></script>
+        <script src="../js/admin/product-details.js" defer></script>
+</body>
+</html>

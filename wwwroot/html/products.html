@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShoeStore - Sản Phẩm</title>
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/products.css" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script src="../js/common.js" defer></script>
+    <script src="../js/cart.js"></script>
+    <script src="../js/products.js" defer></script>
+</head>
+  <body>
+    <header class="header">
+      <nav class="navbar">
+        <div class="logo">
+          <a href="index.html"
+            ><img
+              src="https://via.placeholder.com/50"
+              alt="Logo"
+              class="logo-img"
+            />
+            ShoeStore</a
+          >
+        </div>
+        <ul class="nav-links">
+          <li>
+            <a href="index.html"><i class="fas fa-home"></i> Trang chủ</a>
+          </li>
+          <li class="dropdown">
+            <a href="products.html" class="dropbtn"
+              ><i class="fas fa-shoe-prints"></i> Sản phẩm
+              <i class="fas fa-caret-down"></i
+            ></a>
+            <div class="dropdown-content">
+              <a href="#">Giày thể thao</a>
+              <a href="#">Giày công sở</a>
+              <a href="#">Giày sneaker</a>
+              <a href="#">Giày giảm giá</a>
+            </div>
+          </li>
+          <li>
+            <a href="cart.html"
+              ><i class="fas fa-shopping-cart"></i> Giỏ hàng</a
+            >
+          </li>
+          <li>
+            <a href="login.html"
+              ><i class="fas fa-sign-in-alt"></i> Đăng nhập</a
+            >
+          </li>
+          <li>
+            <a href="register.html"><i class="fas fa-user-plus"></i> Đăng ký</a>
+          </li>
+        </ul>
+        <div class="cart-icon">
+          <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+          <span id="cart-count">0</span>
+        </div>
+        <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+      </nav>
+    </header>
+
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="Tìm kiếm sản phẩm..." />
+      <button class="search-btn"><i class="fas fa-search"></i> Tìm kiếm</button>
+    </div>
+
+    <div class="product-container">
+      <aside class="filter-sidebar">
+        <h3>Bộ lọc sản phẩm</h3>
+        <div class="filter-group" id="category-filter">
+          <h4>Loại Sản Phẩm</h4>
+          <!-- Danh sách loại sản phẩm sẽ được thêm động bằng JavaScript -->
+        </div>
+        <div class="filter-group">
+          <h4>Kích cỡ</h4>
+          <label
+            ><input
+              type="checkbox"
+              name="size"
+              value="38"
+              onchange="applyFilter()"
+            />
+            38</label
+          ><br />
+          <label
+            ><input
+              type="checkbox"
+              name="size"
+              value="39"
+              onchange="applyFilter()"
+            />
+            39</label
+          ><br />
+          <label
+            ><input
+              type="checkbox"
+              name="size"
+              value="40"
+              onchange="applyFilter()"
+            />
+            40</label
+          ><br />
+          <label
+            ><input
+              type="checkbox"
+              name="size"
+              value="41"
+              onchange="applyFilter()"
+            />
+            41</label
+          >
+        </div>
+        <div class="filter-group">
+          <h4>Giá</h4>
+          <label
+            ><input
+              type="checkbox"
+              name="price"
+              value="0-500"
+              onchange="applyFilter()"
+            />
+            Dưới 500.000 VNĐ</label
+          ><br />
+          <label
+            ><input
+              type="checkbox"
+              name="price"
+              value="500-1000"
+              onchange="applyFilter()"
+            />
+            500.000 - 1.000.000 VNĐ</label
+          ><br />
+          <label
+            ><input
+              type="checkbox"
+              name="price"
+              value="1000+"
+              onchange="applyFilter()"
+            />
+            Trên 1.000.000 VNĐ</label
+          >
+        </div>
+        <button class="clear-filter-btn" onclick="clearFilters()">
+          Xóa bộ lọc
+        </button>
+      </aside>
+
+      <div class="product-content">
+        <section class="products">
+          <h2>Tất cả sản phẩm</h2>
+          <div class="product-list" id="product-list">
+            <!-- Sản phẩm sẽ được thêm động bằng JavaScript -->
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script></script>
+    <footer class="footer">
+      <p>© 2025 ShoeStore. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

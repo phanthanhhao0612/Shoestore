@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShoeStore - Trang Chủ</title>
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/home.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <script src="../js/common.js" defer></script>
+    <script src="../js/home.js" defer></script>
+  </head>
+  <body>
+    <header class="header">
+        <nav class="navbar">
+          <div class="logo">
+            <a href="index.html"
+              ><img
+                src="https://via.placeholder.com/50"
+                alt="Logo"
+                class="logo-img"
+              />
+              ShoeStore</a
+            >
+          </div>
+          <ul class="nav-links">
+            <li>
+              <a href="index.html"><i class="fas fa-home"></i> Trang chủ</a>
+            </li>
+            <li class="dropdown">
+              <a href="products.html" class="dropbtn"
+                ><i class="fas fa-shoe-prints"></i> Sản phẩm
+                <i class="fas fa-caret-down"></i
+              ></a>
+              <div class="dropdown-content">
+                <a href="#">Giày thể thao</a>
+                <a href="#">Giày công sở</a>
+                <a href="#">Giày sneaker</a>
+                <a href="#">Giày giảm giá</a>
+              </div>
+            </li>
+            <li>
+              <a href="cart.html"
+                ><i class="fas fa-shopping-cart"></i> Giỏ hàng</a
+              >
+            </li>
+            <li>
+              <a href="order-history.html">
+                <i class="fas fa-history"></i> Lịch sử đơn hàng</a
+              >
+            </li>
+            <li>
+              <a href="login.html"
+                ><i class="fas fa-sign-in-alt"></i> Đăng nhập</a
+              >
+            </li>
+            <li>
+              <a href="register.html"><i class="fas fa-user-plus"></i> Đăng ký</a>
+            </li>
+          </ul>
+          <div class="cart-icon">
+            <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+            <span id="cart-count">0</span>
+          </div>
+          <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+        </nav>
+      </header>
+
+    <section class="banner">
+      <div class="slides">
+        <img
+          src="../asset/banner/th (2).jpg"
+          alt="Black Friday"
+          class="slide"
+          style="display: block"
+        />
+        <img
+          src="../asset/banner/giay.jpg"
+          alt="Siêu Ưu Đãi"
+          class="slide"
+        />
+        <img
+          src="https://via.placeholder.com/1200x400?text=Thỏa+Thích"
+          alt="Thỏa Thích Tín Yêu"
+          class="slide"
+        />
+      </div>
+      <button class="prev" onclick="plusSlides(-1)">&#10094;</button>
+      <button class="next" onclick="plusSlides(1)">&#10095;</button>
+      <div class="dots">
+        <span class="dot active" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+      </div>
+    </section>
+    
+    <div class="search-bar">
+      <input type="text" placeholder="Tìm kiếm giày..." id="searchInput" />
+      <button class="search-btn">
+        <i class="fas fa-search"></i> Tìm kiếm
+      </button>
+    </div>
+
+    <section class="flash-sale">
+        <div class="flash-sale-header">
+          <h2>FLASH SALE</h2>
+          <div class="flash-sale-timer">
+            Kết thúc sau: <span id="flash-sale-countdown">01:15:17:34</span>
+          </div>
+        </div>
+        <div class="flash-sale-products">
+          <div class="flash-sale-product">
+            <img
+              src="../asset/giày/Nike Air Max 90/1.png"
+              alt="Nike Air Max 90"
+            />
+            <h3>Nike Air Max 90</h3>
+            <p class="original-price">700.000 VNĐ</p>
+            <p class="discounted-price">
+              500.000 VNĐ <span class="discount">-29%</span>
+            </p>
+            <button
+              class="buy-now-btn"
+              onclick="addToCart('Nike Air Max 90', 500000, 'https://via.placeholder.com/250?text=Nike+Air+Max+90')"
+            >
+              Mua Ngay
+            </button>
+            <div class="product-ships">Còn 2/5 sản phẩm</div>
+          </div>
+          <div class="flash-sale-product">
+            <img
+              src="../asset/giày/Adidas Ultraboost/4.webp"
+              alt="Adidas Ultraboost"
+            />
+            <h3>Adidas Ultraboost</h3>
+            <p class="original-price">700.000 VNĐ</p>
+            <p class="discounted-price">
+              600.000 VNĐ <span class="discount">-14%</span>
+            </p>
+            <button
+              class="buy-now-btn"
+              onclick="addToCart('Adidas Ultraboost', 600000, 'https://via.placeholder.com/250?text=Adidas+Ultraboost')"
+            >
+              Mua Ngay
+            </button>
+            <div class="product-ships">Còn 3/5 sản phẩm</div>
+          </div>
+          <div class="flash-sale-product">
+            <img
+              src="../asset/giày/Puma RS-X/1.jpg"
+              alt="Puma RS-X"
+            />
+            <h3>Puma RS-X</h3>
+            <p class="original-price">550.000 VNĐ</p>
+            <p class="discounted-price">
+              450.000 VNĐ <span class="discount">-18%</span>
+            </p>
+            <button
+              class="buy-now-btn"
+              onclick="addToCart('Puma RS-X', 450000, 'https://via.placeholder.com/250?text=Puma+RS-X')"
+            >
+              Mua Ngay
+            </button>
+            <div class="product-ships">Còn 4/5 sản phẩm</div>
+          </div>
+          <div class="flash-sale-product">
+            <img
+              src="../asset/giày/Nike React/1.jpg"
+              alt="Nike React"
+            />
+            <h3>Nike React</h3>
+            <p class="original-price">800.000 VNĐ</p>
+            <p class="discounted-price">
+              650.000 VNĐ <span class="discount">-19%</span>
+            </p>
+            <button
+              class="buy-now-btn"
+              onclick="addToCart('Nike React', 650000, 'https://via.placeholder.com/250?text=Nike+React')"
+            >
+              Mua Ngay
+            </button>
+            <div class="product-ships">Còn 1/5 sản phẩm</div>
+          </div>
+          <div class="flash-sale-product">
+            <img
+              src="../asset/giày/Adidas Stan Smith/5.webp"
+              alt="Adidas Stan Smith"
+            />
+            <h3>Adidas Stan Smith</h3>
+            <p class="original-price">600.000 VNĐ</p>
+            <p class="discounted-price">
+              500.000 VNĐ <span class="discount">-17%</span>
+            </p>
+            <button
+              class="buy-now-btn"
+              onclick="addToCart('Adidas Stan Smith', 500000, 'https://via.placeholder.com/250?text=Adidas+Stan+Smith')"
+            >
+              Mua Ngay
+            </button>
+            <div class="product-ships">Còn 2/5 sản phẩm</div>
+          </div>
+          <div class="flash-sale-product">
+            <img
+              src="../asset/giày/Puma Suede/1.jpg"
+              alt="Puma Suede"
+            />
+            <h3>Puma Suede</h3>
+            <p class="original-price">500.000 VNĐ</p>
+            <p class="discounted-price">
+              400.000 VNĐ <span class="discount">-20%</span>
+            </p>
+            <button
+              class="buy-now-btn"
+              onclick="addToCart('Puma Suede', 400000, 'https://via.placeholder.com/250?text=Puma+Suede')"
+            >
+              Mua Ngay
+            </button>
+            <div class="product-ships">Còn 3/5 sản phẩm</div>
+          </div>
+          <div class="flash-sale-product">
+            <img
+              src="../asset/giày/Nike Zoom/1.jpg"
+              alt="Nike Zoom"
+            />
+            <h3>Nike Zoom</h3>
+            <p class="original-price">900.000 VNĐ</p>
+            <p class="discounted-price">
+              750.000 VNĐ <span class="discount">-17%</span>
+            </p>
+            <button
+              class="buy-now-btn"
+              onclick="addToCart('Nike Zoom', 750000, 'https://via.placeholder.com/250?text=Nike+Zoom')"
+            >
+              Mua Ngay
+            </button>
+            <div class="product-ships">Còn 2/5 sản phẩm</div>
+          </div>
+          <div class="flash-sale-product">
+            <img
+              src="../asset/giày/Adidas NMD/1.webp"
+              alt="Adidas NMD"
+            />
+            <h3>Adidas NMD</h3>
+            <p class="original-price">850.000 VNĐ</p>
+            <p class="discounted-price">
+              700.000 VNĐ <span class="discount">-18%</span>
+            </p>
+            <button
+              class="buy-now-btn"
+              onclick="addToCart('Adidas NMD', 700000, 'https://via.placeholder.com/250?text=Adidas+NMD')"
+            >
+              Mua Ngay
+            </button>
+            <div class="product-ships">Còn 1/5 sản phẩm</div>
+          </div>
+        </div>
+        <div class="view-more">
+          <a href="products.html" class="view-more-btn">Xem thêm</a>
+        </div>
+      </section>
+
+      <!-- Sản phẩm nổi bật -->
+      <section class="products featured-products">
+        <h2>Sản phẩm nổi bật</h2>
+        <div class="product-list" id="featured-product-list">
+          <div
+            class="product-item"
+            data-brand="nike"
+            data-size="39"
+            data-price="500000"
+          >
+            <img src="/asset/giày/Nike Air Max 90/1.png" alt="Nike Air Max 90" />
+            <h3>Nike Air Max 90</h3>
+            <p class="price">
+              500.000 VNĐ <span class="old-price">700.000 VNĐ</span>
+            </p>
+            <div class="product-actions">
+              <button
+                onclick="addToCart('Nike Air Max 90', 500000, '/asset/giày/Nike Air Max 90/1.png')"
+              >
+                Thêm vào giỏ
+              </button>
+              <a href="product-detail.html?id=1" class="view-details"
+                >Xem chi tiết</a
+              >
+            </div>
+          </div>
+          <div
+            class="product-item"
+            data-brand="adidas"
+            data-size="40"
+            data-price="600000"
+          >
+            <img
+              src="/asset/giày/Adidas Ultraboost/4.webp"
+              alt="Adidas Ultraboost"
+            />
+            <h3>Adidas Ultraboost</h3>
+            <p class="price">600.000 VNĐ</p>
+            <div class="product-actions">
+              <button
+                onclick="addToCart('Adidas Ultraboost', 600000, '/asset/giày/Adidas Ultraboost/4.webp')"
+              >
+                Thêm vào giỏ
+              </button>
+              <a href="product-detail.html?id=2" class="view-details"
+                >Xem chi tiết</a
+              >
+            </div>
+          </div>
+          <div
+            class="product-item"
+            data-brand="puma"
+            data-size="38"
+            data-price="450000"
+          >
+            <img src="../asset/giày/Puma RS-X/1.jpg" alt="Puma RS-X" />
+            <h3>Puma RS-X</h3>
+            <p class="price">450.000 VNĐ</p>
+            <div class="product-actions">
+              <button
+                onclick="addToCart('Puma RS-X', 450000, '../asset/giày/Puma RS-X/1.jpg')"
+              >
+                Thêm vào giỏ
+              </button>
+              <a href="product-detail.html?id=3" class="view-details"
+                >Xem chi tiết</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <footer class="footer">
+      <p>© 2025 ShoeStore. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

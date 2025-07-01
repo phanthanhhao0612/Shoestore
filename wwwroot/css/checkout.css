@@ -1,0 +1,123 @@
+/* Thanh toán */
+.checkout {
+  max-width: 1300px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.checkout h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.checkout-container {
+  display: flex;
+  gap: 20px;
+}
+
+.checkout-items {
+  flex: 1;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.checkout-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.checkout-item-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.checkout-form {
+  flex: 1;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.checkout-form h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.checkout-form input,
+.checkout-form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.checkout-form p {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.checkout-form button {
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.qr-code-container {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.qr-code-container h4 {
+  font-size: 18px;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+}
+
+#qrcode {
+  margin: 0 auto 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .checkout-container {
+    flex-direction: column;
+  }
+
+  .checkout-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .checkout-item-image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .qr-code-container {
+    padding: 10px;
+  }
+
+  #qrcode canvas {
+    width: 120px !important;
+    height: 120px !important;
+  }
+}

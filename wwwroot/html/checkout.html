@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShoeStore - Thanh Toán</title>
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/checkout.css" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+    <script src="../js/common.js" defer></script>
+    <script src="../js/checkout.js" defer></script>
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="https://via.placeholder.com/50"
+                         alt="Logo"
+                         class="logo-img" />
+                    ShoeStore
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li>
+                    <a href="index.html"><i class="fas fa-home"></i> Trang chủ</a>
+                </li>
+                <li class="dropdown">
+                    <a href="products.html" class="dropbtn">
+                        <i class="fas fa-shoe-prints"></i> Sản phẩm
+                        <i class="fas fa-caret-down"></i>
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="#">Giày thể thao</a>
+                        <a href="#">Giày công sở</a>
+                        <a href="#">Giày sneaker</a>
+                        <a href="#">Giày giảm giá</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="cart.html"><i class="fas fa-shopping-cart"></i> Giỏ hàng</a>
+                </li>
+                <li>
+                    <a href="login.html"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a>
+                </li>
+                <li>
+                    <a href="register.html"><i class="fas fa-user-plus"></i> Đăng ký</a>
+                </li>
+            </ul>
+            <div class="cart-icon">
+                <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+                <span id="cart-count">0</span>
+            </div>
+            <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+        </nav>
+    </header>
+
+    <section class="checkout">
+        <h2>Thanh toán</h2>
+        <div class="checkout-container">
+            <div class="checkout-items" id="checkout-items">
+                <!-- Sản phẩm trong giỏ hàng sẽ được hiển thị động bởi JavaScript -->
+            </div>
+            <div class="checkout-form">
+                <h3>Thông tin giao hàng</h3>
+                <form id="checkout-form" onsubmit="completeCheckout(event)">
+                    <input type="text" placeholder="Họ và tên" required />
+                    <input type="text" placeholder="Địa chỉ" required />
+                    <input type="tel" placeholder="Số điện thoại" required />
+                    <h3>Phương thức thanh toán</h3>
+                    <select id="payment-method"
+                            name="payment-method"
+                            required
+                            onchange="updateQRCode()">
+                        <option value="">Chọn phương thức</option>
+                        <option value="cod">Thanh toán khi nhận hàng (COD)</option>
+                        <option value="bank">Chuyển khoản ngân hàng</option>
+                        <option value="momo">Ví MoMo</option>
+                    </select>
+                    <div id="qr-code-container"
+                         class="qr-code-container"
+                         style="display: none">
+                        <h4>Mã QR Thanh toán</h4>
+                        <div id="qrcode"></div>
+                        <p>Vui lòng quét mã QR để hoàn tất thanh toán.</p>
+                    </div>
+                    <p>Tổng cộng: <span id="checkout-total">0 VNĐ</span></p>
+                    <button type="submit">Xác nhận thanh toán</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 ShoeStore. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
