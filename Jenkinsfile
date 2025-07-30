@@ -31,6 +31,27 @@ pipeline {
             }
         }
         
+        stage('SonarQube Analysis') {
+            steps {
+                echo 'Running SonarQube analysis...'
+                script {
+                    try {
+                        def scannerHome = tool 'SonarScanner for .NET'
+                        withSonarQubeEnv('SonarQube') {
+                            sh "\"${scannerHome}/SonarScanner.MSBuild.exe\" begin /k:\"shoestore\" /n:\"Shoestore\" /v:\"1.0\""
+                            sh "dotnet build"
+                            sh "\"${scannerHome}/SonarScanner.MSBuild.exe\" end"
+                        }
+                        echo 'SonarQube analysis completed successfully!'
+                    } catch (Exception e) {
+                        echo 'SonarQube analysis failed: ' + e.getMessage()
+                        currentBuild.result = 'UNSTABLE'
+                        echo 'SonarQube analysis failed but continuing with pipeline...'
+                    }
+                }
+            }
+        }
+        
         stage('Test') {
             steps {
                 echo 'Running tests...'
@@ -68,10 +89,14 @@ pipeline {
         success {
             echo 'Pipeline succeeded!'
             echo 'Build artifacts are available in the publish directory'
+            echo 'SonarQube analysis completed. Check: http://localhost:9000'
         }
         failure {
             echo 'Pipeline failed!'
             echo 'Please check the build logs for more details'
+        }
+        unstable {
+            echo 'Pipeline unstable - check SonarQube configuration or analysis results'
         }
         always {
             echo 'Cleaning up workspace...'
