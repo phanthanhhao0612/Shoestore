@@ -13,24 +13,6 @@ pipeline {
             }
         }
         
-        stage('Build') {
-            steps {
-                echo 'Building the application...'
-                script {
-                    try {
-                        sh 'dotnet --version'
-                        sh 'dotnet restore'
-                        sh 'dotnet build --configuration Release --no-restore'
-                        echo 'Build completed successfully!'
-                    } catch (Exception e) {
-                        echo 'Build failed: ' + e.getMessage()
-                        currentBuild.result = 'FAILURE'
-                        error('Build stage failed')
-                    }
-                }
-            }
-        }
-        
         stage('SonarQube Analysis') {
             when {
                 expression { 
@@ -57,6 +39,24 @@ pipeline {
                     } catch (Exception e) {
                         echo 'SonarQube analysis failed: ' + e.getMessage()
                         echo 'SonarQube analysis failed but continuing with pipeline...'
+                    }
+                }
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                echo 'Building the application...'
+                script {
+                    try {
+                        sh 'dotnet --version'
+                        sh 'dotnet restore'
+                        sh 'dotnet build --configuration Release --no-restore'
+                        echo 'Build completed successfully!'
+                    } catch (Exception e) {
+                        echo 'Build failed: ' + e.getMessage()
+                        currentBuild.result = 'FAILURE'
+                        error('Build stage failed')
                     }
                 }
             }
