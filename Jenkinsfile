@@ -14,26 +14,33 @@ pipeline {
         }
         
         stage('SonarQube Analysis') {
-            when {
-                expression { 
-                    try {
-                        tool 'SonarScanner for .NET'
-                        return true
-                    } catch (Exception e) {
-                        echo 'SonarScanner for .NET tool not configured, skipping SonarQube analysis'
-                        return false
-                    }
-                }
-            }
             steps {
                 echo 'Running SonarQube analysis...'
                 script {
                     try {
-                        def scannerHome = tool 'SonarScanner for .NET'
+                        // Try to use configured tool first
+                        def scannerHome
+                        try {
+                            scannerHome = tool 'SonarScanner for .NET'
+                            echo 'Using configured SonarScanner for .NET tool'
+                        } catch (Exception e) {
+                            echo 'SonarScanner for .NET tool not configured, using alternative approach'
+                            // Use dotnet sonarscanner if available
+                            sh 'dotnet tool install --global dotnet-sonarscanner'
+                            scannerHome = 'dotnet sonarscanner'
+                        }
+                        
+                        // Run SonarQube analysis
                         withSonarQubeEnv('SonarQube') {
-                            sh "\"${scannerHome}/SonarScanner.MSBuild.exe\" begin /k:\"shoestore\" /n:\"Shoestore\" /v:\"1.0\""
-                            sh "dotnet build"
-                            sh "\"${scannerHome}/SonarScanner.MSBuild.exe\" end"
+                            if (scannerHome == 'dotnet sonarscanner') {
+                                sh 'dotnet sonarscanner begin /k:"shoestore" /n:"Shoestore" /v:"1.0"'
+                                sh 'dotnet build'
+                                sh 'dotnet sonarscanner end'
+                            } else {
+                                sh "\"${scannerHome}/SonarScanner.MSBuild.exe\" begin /k:\"shoestore\" /n:\"Shoestore\" /v:\"1.0\""
+                                sh "dotnet build"
+                                sh "\"${scannerHome}/SonarScanner.MSBuild.exe\" end"
+                            }
                         }
                         echo 'SonarQube analysis completed successfully!'
                     } catch (Exception e) {
@@ -99,7 +106,7 @@ pipeline {
         success {
             echo 'Pipeline succeeded!'
             echo 'Build artifacts are available in the publish directory'
-            echo 'Note: SonarQube analysis is optional and may not have run if not configured'
+            echo 'SonarQube analysis completed. Check: http://localhost:9000'
         }
         failure {
             echo 'Pipeline failed!'
