@@ -17,38 +17,11 @@ pipeline {
             steps {
                 echo 'Running SonarQube analysis...'
                 script {
-                    try {
-                        // Install dotnet-sonarscanner globally
-                        sh 'dotnet tool install --global dotnet-sonarscanner'
-                        
-                        // Run SonarQube analysis using dotnet-sonarscanner
-                        withSonarQubeEnv('SonarQube') {
-                            sh 'dotnet sonarscanner begin /k:"shoestore" /n:"Shoestore" /v:"1.0"'
-                            sh 'dotnet build'
-                            sh 'dotnet sonarscanner end'
-                        }
-                        echo 'SonarQube analysis completed successfully!'
-                    } catch (Exception e) {
-                        echo 'SonarQube analysis failed: ' + e.getMessage()
-                        echo 'SonarQube analysis failed but continuing with pipeline...'
-                    }
-                }
-            }
-        }
-        
-        stage('Build') {
-            steps {
-                echo 'Building the application...'
-                script {
-                    try {
-                        sh 'dotnet --version'
-                        sh 'dotnet restore'
-                        sh 'dotnet build --configuration Release --no-restore'
-                        echo 'Build completed successfully!'
-                    } catch (Exception e) {
-                        echo 'Build failed: ' + e.getMessage()
-                        currentBuild.result = 'FAILURE'
-                        error('Build stage failed')
+                    def scannerHome = tool 'SonarScanner for .NET'
+                    withSonarQubeEnv('SonarQube') {
+                        bat "\"${scannerHome}\\SonarScanner.MSBuild.exe\" begin /k:\"shoestore\" /n:\"Shoestore\" /v:\"1.0\""
+                        bat "dotnet build"
+                        bat "\"${scannerHome}\\SonarScanner.MSBuild.exe\" end"
                     }
                 }
             }
@@ -57,49 +30,21 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                script {
-                    try {
-                        sh 'dotnet test --no-build --verbosity normal --configuration Release'
-                        echo 'Tests completed successfully!'
-                    } catch (Exception e) {
-                        echo 'Tests failed: ' + e.getMessage()
-                        currentBuild.result = 'FAILURE'
-                        error('Test stage failed')
-                    }
-                }
-            }
-        }
-        
-        stage('Publish') {
-            steps {
-                echo 'Publishing the application...'
-                script {
-                    try {
-                        sh 'dotnet publish --configuration Release --output ./publish --no-build'
-                        echo 'Application published successfully!'
-                    } catch (Exception e) {
-                        echo 'Publish failed: ' + e.getMessage()
-                        currentBuild.result = 'FAILURE'
-                        error('Publish stage failed')
-                    }
-                }
+                sh 'dotnet test --no-build --verbosity normal'
             }
         }
     }
     
     post {
         success {
-            echo 'Pipeline succeeded!'
-            echo 'Build artifacts are available in the publish directory'
+            echo 'Build succeeded!'
             echo 'SonarQube analysis completed. Check: http://localhost:9000'
         }
         failure {
-            echo 'Pipeline failed!'
-            echo 'Please check the build logs for more details'
+            echo 'Build failed!'
         }
-        always {
-            echo 'Cleaning up workspace...'
-            cleanWs()
+        unstable {
+            echo 'Build unstable - check SonarQube configuration'
         }
     }
-} 
+}
