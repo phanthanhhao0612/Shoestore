@@ -58,10 +58,28 @@ pipeline {
             steps {
                 echo 'Pushing to Docker Hub...'
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
-                        sh 'docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}'
-                        sh 'docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}:latest'
+                    try {
+                        withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                            echo 'Attempting Docker Hub login...'
+                            sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                            
+                            echo 'Checking Docker Hub connectivity...'
+                            sh 'docker search hello-world --limit 1'
+                            
+                            echo 'Pushing tagged image...'
+                            sh "docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
+                            
+                            echo 'Pushing latest tag...'
+                            sh "docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}:latest"
+                            
+                            echo 'Docker Hub push completed successfully!'
+                        }
+                    } catch (Exception e) {
+                        echo 'Docker Hub push failed: ' + e.getMessage()
+                        echo 'Checking Docker Hub credentials and connectivity...'
+                        sh 'docker login -u $DOCKER_USERNAME --password-stdin <<< "$DOCKER_PASSWORD" || echo "Login failed"'
+                        sh 'docker images'
+                        error 'Docker Hub push failed - check credentials and network connectivity'
                     }
                 }
             }
