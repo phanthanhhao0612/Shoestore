@@ -2,7 +2,9 @@ pipeline {
     agent any
     
     environment {
-        BUILD_NUMBER = "${env.BUILD_NUMBER}"
+        DOCKER_REGISTRY = "hao06122005"
+        IMAGE_NAME = "shoestore"
+        IMAGE_TAG = "${env.BUILD_NUMBER}"
     }
     
     stages {
@@ -33,6 +35,37 @@ pipeline {
                 sh 'dotnet test --no-build --verbosity normal'
             }
         }
+        
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building Docker image...'
+                script {
+                    try {
+                        sh 'docker --version'
+                        sh "docker build -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
+                        sh "docker tag ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ${DOCKER_REGISTRY}/${IMAGE_NAME}:latest"
+                        echo 'Docker image built successfully!'
+                    } catch (Exception e) {
+                        echo 'Docker build failed: ' + e.getMessage()
+                        echo 'Please ensure Docker is installed and running on Jenkins server'
+                        currentBuild.result = 'UNSTABLE'
+                    }
+                }
+            }
+        }
+        
+        stage('Push to Docker Hub') {
+            steps {
+                echo 'Pushing to Docker Hub...'
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                        sh 'docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}'
+                        sh 'docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}:latest'
+                    }
+                }
+            }
+        }
     }
     
     post {
@@ -44,7 +77,7 @@ pipeline {
             echo 'Build failed!'
         }
         unstable {
-            echo 'Build unstable - check SonarQube configuration'
+            echo 'Build unstable - check Docker installation or SonarQube configuration'
         }
     }
 }
