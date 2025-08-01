@@ -1,54 +1,27 @@
 version: '3.8'
 
 services:
-  # Shoestore Web Application
-  shoestore-web:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  shoestore:
+    image: hao06122005/shoestore:latest
     ports:
-      - "5000:8080"
+      - "91:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__DefaultConnection=Server=shoestore-db;Database=Shoestore1111;User Id=sa;Password=Hao06122005!;TrustServerCertificate=true
+      - ConnectionStrings__DefaultConnection=Server=db;Database=Shoestore11;User=sa;Password=Hao06122005!;TrustServerCertificate=True
     depends_on:
-      - shoestore-db
-    networks:
-      - shoestore-network
+      - db
     restart: unless-stopped
 
-  # SQL Server Database
-  shoestore-db:
+  db:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=Hao06122005
-      - MSSQL_PID=Express
+      - SA_PASSWORD=Hao06122005!
     ports:
       - "1433:1433"
     volumes:
-      - shoestore-db-data:/var/opt/mssql
-    networks:
-      - shoestore-network
-    restart: unless-stopped
-
-  # Redis Cache (Optional)
-  shoestore-redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
-    volumes:
-      - shoestore-redis-data:/data
-    networks:
-      - shoestore-network
+      - sqlserver_data:/var/opt/mssql
     restart: unless-stopped
 
 volumes:
-  shoestore-db-data:
-    driver: local
-  shoestore-redis-data:
-    driver: local
-
-networks:
-  shoestore-network:
-    driver: bridge 
+  sqlserver_data:
