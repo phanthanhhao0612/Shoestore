@@ -10,7 +10,7 @@ services:
       - "91:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__DefaultConnection=Server=shoestore-db;Database=Shoestore1111;User Id=sa;Password=t123456;TrustServerCertificate=true
+      - ConnectionStrings__DefaultConnection=Server=shoestore-db;Database=Shoestore1111;User Id=sa;Password=Hao06122005!;TrustServerCertificate=true
     depends_on:
       - shoestore-db
     networks:
@@ -22,7 +22,7 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=t123456
+      - SA_PASSWORD=Hao06122005
       - MSSQL_PID=Express
     ports:
       - "1433:1433"
