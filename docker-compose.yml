@@ -10,7 +10,7 @@ services:
       - "91:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__DefaultConnection=Server=shoestore-db;Database=ShoestoreDB;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true
+      - ConnectionStrings__DefaultConnection=Server=shoestore-db;Database=Shoestore1111;User Id=sa;Password=t123456;TrustServerCertificate=true
     depends_on:
       - shoestore-db
     networks:
