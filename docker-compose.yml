@@ -4,7 +4,7 @@ services:
   shoestore:
     image: hao06122005/shoestore:latest
     ports:
-      - "91:8080"
+      - "5050:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=Server=db;Database=Shoestore11;User=sa;Password=Hao06122005!;TrustServerCertificate=True
