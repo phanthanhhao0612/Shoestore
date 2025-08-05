@@ -1,0 +1,63 @@
+services:
+  prometheus: # To get metrics from exporters
+    container_name: monitoring-prometheus
+    image: prom/prometheus
+    user: root
+    ports:
+      - "9090:9090"
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./alert-rules:/etc/prometheus/rules
+      - ./probe:/etc/prometheus/probe
+      # mount NFS Cluster
+      # - /mnt/nfs-cluster/prometheus_data:/prometheus/data
+      - ./prometheus_data:/prometheus/data
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.retention.time=5d
+      - --storage.tsdb.path=data/
+    networks:
+      - monitoring
+      
+  alert-manager: # To send alert to telegram/discord/...
+    container_name: monitoring-alert-manager
+    image: prom/alertmanager
+    user: root
+    ports:
+      - "9093:9093"
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./alertmanager:/etc/alertmanager
+    # environment:
+    #   - BOT_TOKEN=${BOT_TOKEN}
+    command:
+      - --config.file=/etc/alertmanager/alertmanager.yml
+    networks:
+      - monitoring
+
+  grafana: # To monitor metrics on dashboard
+    container_name: monitoring-grafana
+    image: grafana/grafana
+    user: root
+    ports:
+      - "3000:3000"
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+      - ./grafana/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
+      - ./grafana/data:/var/lib/grafana
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      # - ./grafana/grafana.ini:/etc/grafana/custom.ini
+    env_file:
+      - .grafana.secret
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    external: true
+    # driver: overlay

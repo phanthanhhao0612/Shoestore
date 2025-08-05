@@ -1,0 +1,58 @@
+services:
+  node-exporter: # export metric about system, such as: cpu, ram, disk, network, ...
+    container_name: monitoring-node-exporter
+    image: prom/node-exporter:latest
+    restart: unless-stopped
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    networks:
+      - monitoring
+
+  dcgm-exporter: # export metrics about GPU, such as memory, ram, temperature, ...
+    image: nvidia/dcgm-exporter
+    container_name: monitoring-dcgm-exporter
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    ports:
+      - "9400:9400"
+    networks:
+      - monitoring
+
+  cadvisor: # export metrics about Docker container, such as ram, memory, I/O, network, ...
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: monitoring-cadvisor
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    restart: always
+    networks:
+      - monitoring
+
+  blackbox-exporter: # Check services status via HTTP, TCP, ... (ping, checkport, ...)
+    container_name: monitoring-blackbox_exporter
+    image: prom/blackbox-exporter
+    user: root
+    ports:
+      - "9115:9115"
+    volumes:
+      - ./probe/blackbox_config.yml:/etc/blackbox_exporter/config.yml
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    external: true
