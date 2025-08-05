@@ -17,22 +17,22 @@ services:
     networks:
       - monitoring
 
-  dcgm-exporter: # export metrics about GPU, such as memory, ram, temperature, ...
-    image: nvidia/dcgm-exporter
-    container_name: monitoring-dcgm-exporter
-    runtime: nvidia
-    environment:
-      - NVIDIA_VISIBLE_DEVICES=all
-    ports:
-      - "9400:9400"
-    networks:
-      - monitoring
+  # dcgm-exporter: # export metrics about GPU, such as memory, ram, temperature, ...
+  #   image: nvidia/dcgm-exporter
+  #   container_name: monitoring-dcgm-exporter
+  #   runtime: nvidia
+  #   environment:
+  #     - NVIDIA_VISIBLE_DEVICES=all
+  #   ports:
+  #     - "9400:9400"
+  #   networks:
+  #     - monitoring
 
   cadvisor: # export metrics about Docker container, such as ram, memory, I/O, network, ...
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: monitoring-cadvisor
     ports:
-      - "8080:8080"
+      - "8081:8080"
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
