@@ -1,20 +1,86 @@
 groups:
-  - name: node_alerts
+  - name: system_alerts
     rules:
+      # Cảnh báo CPU > 90%
       - alert: HighCPUUsage
-        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
-        for: 5m
+        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90
+        for: 2m
         labels:
-          severity: warning
+          severity: critical
         annotations:
-          summary: "High CPU usage on {{ $labels.instance }}"
-          description: "CPU usage is above 80% for 5 minutes"
+          summary: "CPU usage critical on {{ $labels.instance }}"
+          description: "CPU usage is {{ $value }}% for 2 minutes"
 
+      # Cảnh báo Memory > 90%
       - alert: HighMemoryUsage
-        expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 80
+        expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 90
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Memory usage critical on {{ $labels.instance }}"
+          description: "Memory usage is {{ $value }}% for 2 minutes"
+
+      # Cảnh báo Disk > 85%
+      - alert: HighDiskUsage
+        expr: (node_filesystem_size_bytes - node_filesystem_avail_bytes) / node_filesystem_size_bytes * 100 > 85
         for: 5m
         labels:
           severity: warning
         annotations:
-          summary: "High memory usage on {{ $labels.instance }}"
-          description: "Memory usage is above 80% for 5 minutes" 
+          summary: "Disk usage high on {{ $labels.instance }}"
+          description: "Disk usage is {{ $value }}% for 5 minutes"
+
+  - name: application_alerts
+    rules:
+      # Cảnh báo ứng dụng không phản hồi
+      - alert: ApplicationDown
+        expr: up{job="dotnet-app"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Application is down"
+          description: "Application has been down for more than 1 minute"
+
+      # Cảnh báo response time cao
+      - alert: HighResponseTime
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 1.0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High response time on {{ $labels.route }}"
+          description: "95th percentile response time is {{ $value }}s"
+
+      # Cảnh báo error rate cao
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m]) * 100 > 5
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High error rate detected"
+          description: "Error rate is {{ $value }}% for 2 minutes"
+
+      # Cảnh báo database connections cao
+      - alert: HighDatabaseConnections
+        expr: dotnet_database_connections_active > 80
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High database connections"
+          description: "Database connections: {{ $value }}"
+
+  - name: business_alerts
+    rules:
+      # Cảnh báo khi không có đơn hàng mới
+      - alert: NoNewOrders
+        expr: rate(orders_created_total[10m]) == 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "No new orders detected"
+          description: "No orders have been created in the last 10 minutes" 
